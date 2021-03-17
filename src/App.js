@@ -1,25 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import LoginPage from './components/login-page';
+import Map from './components/map';
+import './scss/App.scss';
+import { pages } from './consts';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component {
+  state = { page: pages.login };
+
+  setPage = (page) => {
+    this.setState({ page });
+  }
+
+  render() {
+    const { page } = this.state;
+
+    return (
+      <div className='App'>
+        {page === pages.login && <LoginPage setPage={this.setPage} />}
+        {page === pages.map && <Map setPage={this.setPage} />}
+      </div>
+    )
+  }
 }
-
-export default App;

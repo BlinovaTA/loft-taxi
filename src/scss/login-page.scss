@@ -1,0 +1,27 @@
+.login-page {
+  height: 100%;
+  width: 100%;
+  display: flex;
+
+  &__icon {
+    background: #000;
+    width: 33%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__img {
+    width: 192px;
+    height: 228px;
+  }
+
+  &__map {
+    flex: 1;
+    background: url('../img/map.svg') left top no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

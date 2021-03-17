@@ -1,0 +1,15 @@
+.menu {
+  display: flex;
+  margin-right: 35px;
+  cursor: pointer;
+
+  &__item {
+    color: #fff;
+    font-size: 22px;
+    margin-left: 44px;
+  }
+
+  &__item--active {
+    color: #FDBF5A;
+  }
+}

@@ -19,7 +19,7 @@
 
   &__map {
     flex: 1;
-    background: url('../img/map.svg') left top no-repeat;
+    background: url('../img/map.svg') left top / 100% no-repeat;
     display: flex;
     justify-content: center;
     align-items: center;

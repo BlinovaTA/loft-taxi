@@ -3,7 +3,7 @@ import Header from '../components/header';
 import smallLogo from '../img/small-logo.svg';
 import chip from '../img/chip.svg';
 import circles from '../img/circles.svg';
-import { pages } from '../constants';
+import { PAGES } from '../constants';
 import '../scss/form.scss';
 import '../scss/card-layout.scss';
 
@@ -25,7 +25,7 @@ export default class Profile extends Component {
   }
 
   goToMap = () => {
-    this.props.setPage(pages.map.key);
+    this.props.setPage(PAGES.map.key);
   }
 
   render() {
@@ -33,7 +33,7 @@ export default class Profile extends Component {
 
     return (
       <div className='page-container'>
-        <Header setPage={this.props.setPage} page={pages.profile.key} />
+        <Header setPage={this.props.setPage} page={PAGES.profile.key} />
         <div className='page-content'>
           <div className='container'>
             <div className={`wrapper ${isEdit ? 'edit-profile-wrapper' : 'gotomap-profile-wrapper'}`}>

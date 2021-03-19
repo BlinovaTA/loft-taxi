@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { pages } from '../constants';
+import { PAGES, PAGES_KEYS } from '../constants';
 import logo from '../img/logo.svg';
 import '../scss/header.scss';
 import '../scss/menu.scss';
@@ -15,13 +15,13 @@ export default class Header extends Component {
         </div>
         <ul className='header__menu menu'>
           {
-            Object.keys(pages).map(page =>
+            PAGES_KEYS.map(page =>
               <li
                 key={page}
                 className={`menu__item ${this.state.active === page ? ' menu__item--active' : ''}`}
                 onClick={() => this.props.setPage(page)}
               >
-                {pages[page].name}
+                {PAGES[page].name}
               </li>
             )
           }

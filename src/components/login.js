@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { pages, emailFormat } from '../consts';
+import { pages } from '../constants';
 import '../scss/form.scss';
 import '../scss/button.scss';
 
@@ -11,7 +11,7 @@ export default class Login extends Component {
   }
 
   setPage = () => {
-    this.props.setPage(pages.map);
+    this.props.setPage(pages.map.key);
   }
 
   render() {
@@ -26,7 +26,7 @@ export default class Login extends Component {
         <form className='form login-form'>
           <div className='form__block'>
             <div className='form__item-title'>Email</div>
-            <input type='text' className='form__input' name='login' value={login} onChange={this.handleChange} />
+            <input type='email' className='form__input' name='login' value={login} onChange={this.handleChange} />
           </div>
           <div className='form__block'>
             <div className='form__item-title'>Пароль</div>

@@ -1,36 +1,11 @@
 import React, { Component } from 'react';
-import { pages } from '../consts';
+import { pages } from '../constants';
 import logo from '../img/logo.svg';
 import '../scss/header.scss';
 import '../scss/menu.scss';
 
 export default class Header extends Component {
-
-  clearAllActive = () => {
-    let menuItems = document.querySelectorAll('.menu__item');
-
-    menuItems.forEach(item => {
-      item.classList.remove('menu__item--active');
-    });
-  }
-
-  setActive = (e, page) => {
-    this.clearAllActive();
-    e.target.classList.add('menu__item--active');
-    this.props.setPage(page);
-  }
-
-  setPage = (e) => {
-    this.setActive(e, pages.login);
-  }
-
-  showProfile = (e) => {
-    this.setActive(e, pages.profile);
-  }
-
-  showMap = (e) => {
-    this.setActive(e, pages.map);
-  }
+  state = { active: this.props.page };
 
   render() {
     return (
@@ -39,9 +14,17 @@ export default class Header extends Component {
           <img alt='logo' className='logo__img' src={logo} />
         </div>
         <ul className='header__menu menu'>
-          <li className='menu__item menu__item--active' onClick={this.showMap}>Карта</li>
-          <li className='menu__item' onClick={this.showProfile}>Профиль</li>
-          <li className='menu__item' onClick={this.setPage}>Выйти</li>
+          {
+            Object.keys(pages).map(page =>
+              <li
+                key={page}
+                className={`menu__item ${this.state.active === page ? ' menu__item--active' : ''}`}
+                onClick={() => this.props.setPage(page)}
+              >
+                {pages[page].name}
+              </li>
+            )
+          }
         </ul>
       </header>
     )

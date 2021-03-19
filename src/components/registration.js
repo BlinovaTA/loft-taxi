@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { pages } from '../consts';
+import { pages } from '../constants';
 import '../scss/form.scss';
 import '../scss/button.scss';
 
@@ -11,7 +11,7 @@ export default class Registration extends Component {
   }
 
   setPage = () => {
-    this.props.setPage(pages.map);
+    this.props.setPage(pages.map.key);
   }
 
   render() {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Login from './login';
-import Registration from './registration';
+import Login from '../components/login';
+import Registration from '../components/registration';
 import icon from '../img/big-logo.svg';
 import '../scss/login-page.scss';
 

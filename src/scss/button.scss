@@ -1,0 +1,13 @@
+.button {
+  width: 353px;
+  height: 61px;
+  background: #FDBF5A;
+  border-radius: 70px;
+  border: none;
+  font-size: 25px;
+  cursor: pointer;
+
+  &:active {
+    background: #FFA842;
+  }
+}

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { PAGES } from '../constants';
+import Input from './input';
 import '../scss/form.scss';
 import '../scss/button.scss';
 
@@ -24,14 +25,8 @@ export default class Login extends Component {
           <h1 className='title'>Войти</h1>
         </div>
         <form className='form login-form'>
-          <div className='form__block'>
-            <div className='form__item-title'>Email</div>
-            <input type='email' className='form__input' name='login' value={login} onChange={this.handleChange} />
-          </div>
-          <div className='form__block'>
-            <div className='form__item-title'>Пароль</div>
-            <input type='password' className='form__input' name='password' value={password} onChange={this.handleChange} />
-          </div>
+          <Input title='Email' name='login' type='email' value={login} onChange={this.handleChange}/>
+          <Input title='Пароль' name='password' type='password' value={password} onChange={this.handleChange}/>
           <div className='form__block'>
             <p className='form__forgot-password'>Забыли пароль?</p>
           </div>

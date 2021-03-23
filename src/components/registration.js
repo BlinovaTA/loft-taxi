@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { PAGES } from '../constants';
+import Input from './input';
 import '../scss/form.scss';
 import '../scss/button.scss';
 
@@ -24,18 +25,9 @@ export default class Registration extends Component {
           <h1 className='title'>Регистрация</h1>
         </div>
         <form className='form registration-form'>
-          <label className='form__block'>
-            <div className='form__item-title'>Email*</div>
-            <input type='text' className='form__input' name='login' value={login} onChange={this.handleChange} />
-          </label>
-          <label className='form__block'>
-            <div className='form__item-title'>Как вас зовут?*</div>
-            <input type='text' className='form__input' name='name' value={name} onChange={this.handleChange} />
-          </label>
-          <label className='form__block form__block--last'>
-            <div className='form__item-title'>Придумайте пароль*</div>
-            <input type='password' className='form__input' name='password' value={password} onChange={this.handleChange} />
-          </label>
+          <Input title='Email*' name='login' type='email' value={login} onChange={this.handleChange}/>
+          <Input title='Как вас зовут?*' name='name' type='text' value={name} onChange={this.handleChange}/>
+          <Input title='Придумайте пароль*' name='password' type='password' value={password} onChange={this.handleChange}/>
           <button className='form__button button' onClick={this.setPage}>Зарегистрироваться</button>
           <div className='form__switch'>
             <span className='form__to-title'>Уже зарегистрированны?</span>

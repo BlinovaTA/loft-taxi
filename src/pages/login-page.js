@@ -1,34 +1,55 @@
-import React, { Component } from 'react';
+import React, { useContext, useState } from 'react';
+import PropTypes from 'prop-types';
 import Login from '../components/login';
 import Registration from '../components/registration';
 import icon from '../img/big-logo.svg';
+import { AuthorizationContext } from '../context/authorizationContext';
+import { PAGES } from '../constants';
 import '../scss/login-page.scss';
 
-export default class LoginPage extends Component {
-  state = { isLogin: true };
+const LoginPage = (props) => {
+  const [isLogin, setIsLogin] = useState(true);
+  const context = useContext(AuthorizationContext);
 
-  formChange = () => {
-    const { isLogin } = this.state;
-    this.setState({ isLogin: !isLogin });
+  const formChange = () => {
+    setIsLogin(!isLogin);
   }
 
-  render() {
-    const { isLogin } = this.state;
-    const { setPage } = this.props;
+  const authorization = (e) => {
+    e.preventDefault();
 
-    return (
-      <div className='login-page'>
-        <div className='login-page__icon'>
-          <img className='login-page__img' alt='big-logo' src={icon} />
-        </div>
-        <div className='login-page__map'>
-          {
-            isLogin
-              ? <Login formChange={this.formChange} setPage={setPage} />
-              : <Registration formChange={this.formChange} setPage={setPage} />
-          }
-        </div>
+    const { email, password } = e.target;
+    const isLogin = context.login(email.value, password.value);
+
+    if (isLogin) {
+      props.setPage(PAGES.map.key);
+    }
+  }
+
+  const registration = (e) => {
+    e.preventDefault();
+
+    props.setPage(PAGES.map.key);
+  }
+
+  return (
+    <div className='login-page'>
+      <div className='login-page__icon'>
+        <img className='login-page__img' alt='big-logo' src={icon} />
       </div>
-    )
-  }
+      <div className='login-page__map'>
+        {
+          isLogin
+            ? <Login formChange={formChange} authorization={authorization} />
+            : <Registration formChange={formChange} registration={registration} />
+        }
+      </div>
+    </div>
+  )
 }
+
+LoginPage.propTypes = {
+  setPage: PropTypes.func
+}
+
+export default LoginPage;

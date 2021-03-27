@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { PAGES, PAGES_KEYS } from '../constants';
 import logo from '../img/logo.svg';
 import '../scss/header.scss';
 import '../scss/menu.scss';
 
 export default class Header extends Component {
+
+  static propTypes = {
+    page: PropTypes.string,
+    setPage: PropTypes.func
+  }
+
   state = { active: this.props.page };
 
   render() {

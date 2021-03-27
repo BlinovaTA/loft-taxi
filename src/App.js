@@ -1,30 +1,34 @@
-import React, { Component } from 'react';
+import React, { useState, useContext } from 'react';
 import LoginPage from './pages/login-page';
-import Map from './pages/map-page';
+import MapPage from './pages/map-page';
 import Profile from './pages/profile-page';
+import { AuthorizationContext } from './context/authorizationContext';
 import './scss/App.scss';
 import { PAGES } from './constants';
 
-export default class App extends Component {
-  state = { page: PAGES.login.key };
+const App = () => {
+  const [page, setPage] = useState(PAGES.login.key);
+  const context = useContext(AuthorizationContext);
 
-  setPage = (page) => {
-    this.setState({ page });
+  const navigateTo = (page) => {
+    setPage(page);
+
+    if (page === PAGES.login.key) {
+      context.logout();
+    }
   }
 
-  render() {
-    const { page } = this.state;
-
-    return (
-      <div className='App'>
+  return (
+    <div className='App'>
+      {
         {
-          {
-            [PAGES.login.key]: <LoginPage setPage={this.setPage} />,
-            [PAGES.map.key]: <Map setPage={this.setPage} />,
-            [PAGES.profile.key]: <Profile setPage={this.setPage} />
-          }[page]
-        }
-      </div>
-    )
-  }
+          [PAGES.login.key]: <LoginPage setPage={navigateTo} />,
+          [PAGES.map.key]: <MapPage setPage={navigateTo} />,
+          [PAGES.profile.key]: <Profile setPage={navigateTo} />
+        }[page]
+      }
+    </div>
+  )
 }
+
+export default App;

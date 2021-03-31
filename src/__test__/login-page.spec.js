@@ -1,5 +1,5 @@
 import React from 'react';
-import LoginPage from '../pages/Login-page';
+import LoginPage from '../pages/login-page';
 import { render } from '@testing-library/react';
 import { shallow } from 'enzyme';
 

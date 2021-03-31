@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import Map from '../components/Map';
-import Header from '../components/Header';
+import Map from '../components/map';
+import Header from '../components/header';
 import { PAGES } from '../constants';
 
 export default class MapPage extends PureComponent {

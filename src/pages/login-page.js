@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
-import Login from '../components/Login';
-import Registration from '../components/Registration';
+import Login from '../components/login';
+import Registration from '../components/registration';
 import icon from '../img/big-logo.svg';
-import { AuthorizationContext } from '../context/AuthorizationContext';
+import { AuthorizationContext } from '../context/authorizationContext';
 import { PAGES } from '../constants';
 import '../scss/login-page.scss';
 

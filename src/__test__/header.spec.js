@@ -1,6 +1,6 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
-import Header from "../components/Header";
+import Header from "../components/header";
 import { PAGES } from '../constants';
 
 describe("Header", () => {

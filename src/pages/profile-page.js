@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Header from '../components/Header';
-import Input from '../components/Input';
+import Header from '../components/header';
+import Input from '../components/input';
 import smallLogo from '../img/small-logo.svg';
 import chip from '../img/chip.svg';
 import circles from '../img/circles.svg';

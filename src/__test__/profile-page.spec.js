@@ -1,5 +1,5 @@
 import React from 'react';
-import Profile from '../pages/Profile-page';
+import Profile from '../pages/profile-page';
 import { render } from '@testing-library/react';
 import { shallow } from 'enzyme';
 import { PAGES } from '../constants';

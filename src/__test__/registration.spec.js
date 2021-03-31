@@ -1,5 +1,5 @@
 import React from 'react';
-import Registration from '../components/Registration';
+import Registration from '../components/registration';
 import { render } from '@testing-library/react';
 import { shallow } from 'enzyme';
 

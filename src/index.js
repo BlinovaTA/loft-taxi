@@ -4,7 +4,7 @@ import './scss/index.scss';
 import App from './App';
 import { theme } from "loft-taxi-mui-theme";
 import { MuiThemeProvider } from "@material-ui/core/styles";
-import { AuthorizatonProvider } from './context/AuthorizationContext';
+import { AuthorizatonProvider } from './context/authorizationContext';
 
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>

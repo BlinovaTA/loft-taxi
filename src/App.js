@@ -1,8 +1,8 @@
 import React, { useState, useContext } from 'react';
-import LoginPage from './pages/Login-page';
-import MapPage from './pages/Map-page';
-import Profile from './pages/Profile-page';
-import { AuthorizationContext } from './context/AuthorizationContext';
+import LoginPage from './pages/login-page';
+import MapPage from './pages/map-page';
+import Profile from './pages/profile-page';
+import { AuthorizationContext } from './context/authorizationContext';
 import './scss/App.scss';
 import { PAGES } from './constants';
 

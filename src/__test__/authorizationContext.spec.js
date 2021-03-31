@@ -1,5 +1,5 @@
 import React from "react";
-import { AuthorizatonProvider, AuthorizationContext } from "../context/AuthorizationContext";
+import { AuthorizatonProvider, AuthorizationContext } from "../context/authorizationContext";
 import { render } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 

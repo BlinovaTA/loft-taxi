@@ -1,5 +1,5 @@
 import React from 'react';
-import MapPage from '../pages/Map-page';
+import MapPage from '../pages/map-page';
 import { render } from '@testing-library/react';
 
 jest.mock("../components/map", () => () => <div>Map</div>);

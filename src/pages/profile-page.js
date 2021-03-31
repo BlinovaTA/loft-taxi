@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Header from '../components/header';
+import Input from '../components/input';
 import smallLogo from '../img/small-logo.svg';
 import chip from '../img/chip.svg';
 import circles from '../img/circles.svg';
@@ -8,6 +10,10 @@ import '../scss/form.scss';
 import '../scss/card-layout.scss';
 
 export default class Profile extends Component {
+  static propTypes = {
+    setPage: PropTypes.func
+  }
+
   state = {
     name: '',
     cardNumber: '',
@@ -50,26 +56,14 @@ export default class Profile extends Component {
                   ? <form className='form profile-form'>
                     <div className='form__row'>
                       <div className='form__col'>
-                        <div className='form__block'>
-                          <div className='form__item-title'>Имя владельца</div>
-                          <input type='text' className='form__input' name='name' value={name} onChange={this.handleChange} />
-                        </div>
-                        <div className='form__block'>
-                          <div className='form__item-title'>Номер карты</div>
-                          <input type='text' className='form__input' name='cardNumber' value={cardNumber} onChange={this.handleChange} />
-                        </div>
+                        <Input title='Имя владельца' name='name' type='text' value={name} onChange={this.handleChange} />
+                        <Input title='Номер карты' name='cardNumber' type='text' value={cardNumber} onChange={this.handleChange} />
                         <div className='form__row'>
                           <div className='form__col'>
-                            <div className='form__block'>
-                              <div className='form__item-title'>MM/YY</div>
-                              <input type='text' className='form__input' name='cardExpiryDate' value={cardExpiryDate} onChange={this.handleChange} />
-                            </div>
+                            <Input title='MM/YY' name='cardExpiryDate' type='text' value={cardExpiryDate} onChange={this.handleChange} />
                           </div>
                           <div className='form__col'>
-                            <div className='form__block'>
-                              <div className='form__item-title'>CVC</div>
-                              <input type='text' className='form__input' name='cvc' value={cvc} onChange={this.handleChange} />
-                            </div>
+                            <Input title='CVC' name='cvc' type='text' value={cvc} onChange={this.handleChange} />
                           </div>
                         </div>
                       </div>
@@ -97,8 +91,6 @@ export default class Profile extends Component {
           </div>
         </div>
       </div>
-
-
     )
   }
 }

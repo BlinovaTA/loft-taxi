@@ -1,18 +1,33 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { logOut } from '../store/actions/authorization';
+import { getCardData } from '../store/actions/card';
 import { PAGES, PAGES_KEYS } from '../constants';
 import logo from '../img/logo.svg';
 import '../scss/header.scss';
 import '../scss/menu.scss';
+import { Link } from 'react-router-dom';
 
-export default class Header extends Component {
-
+class Header extends Component {
   static propTypes = {
     page: PropTypes.string,
-    setPage: PropTypes.func
   }
 
   state = { active: this.props.page };
+
+  linkClick = (e) => {
+    switch (e.target.id) {
+      case PAGES.login.key: {
+        this.props.logOut();
+
+        break;
+      }
+
+      default:
+        break;
+    }
+  }
 
   render() {
     return (
@@ -23,12 +38,15 @@ export default class Header extends Component {
         <ul className='header__menu menu'>
           {
             PAGES_KEYS.map(page =>
-              <li
-                key={page}
-                className={`menu__item ${this.state.active === page ? ' menu__item--active' : ''}`}
-                onClick={() => this.props.setPage(page)}
-              >
-                {PAGES[page].name}
+              <li key={page}>
+                <Link
+                  to={PAGES[page].link}
+                  onClick={this.linkClick}
+                  id={page}
+                  className={`menu__item ${this.state.active === page ? ' menu__item--active' : ''}`}
+                >
+                  {PAGES[page].name}
+                </Link>
               </li>
             )
           }
@@ -37,3 +55,11 @@ export default class Header extends Component {
     )
   }
 }
+
+const mapStateToProps = function (state) {
+  return {
+    token: state.authorization.token
+  }
+}
+
+export default connect(mapStateToProps, { logOut, getCardData })(Header);

@@ -6,7 +6,8 @@ import '../scss/button.scss';
 
 export default class Login extends Component {
   static propTypes = {
-    formChange: PropTypes.func
+    formChange: PropTypes.func,
+    authorization: PropTypes.func
   }
 
   state = { email: '', password: '' };

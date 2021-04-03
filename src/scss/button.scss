@@ -6,6 +6,10 @@
   border: none;
   font-size: 25px;
   cursor: pointer;
+  color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &:active {
     background: #FFA842;

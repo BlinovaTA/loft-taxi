@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { setCardData, getCardData } from '../store/actions/card';
+import { getCardDataFromLocalStorage } from '../localstorage';
 import Header from '../components/header';
 import Input from '../components/input';
 import smallLogo from '../img/small-logo.svg';
@@ -9,37 +12,45 @@ import { PAGES } from '../constants';
 import '../scss/form.scss';
 import '../scss/card-layout.scss';
 
-export default class Profile extends Component {
-  static propTypes = {
-    setPage: PropTypes.func
-  }
-
+class Profile extends Component {
   state = {
-    name: '',
+    cardName: '',
     cardNumber: '',
-    cardExpiryDate: '',
+    expiryDate: '',
     cvc: '',
     isEdit: true
   };
+
+  componentDidMount() {
+    const localStorageData = getCardDataFromLocalStorage();
+
+    this.setState({
+      cardName: localStorageData.cardName,
+      cardNumber: localStorageData.cardNumber,
+      expiryDate: localStorageData.expiryDate,
+      cvc: localStorageData.cvc,
+    });
+  }
 
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  saveProfile = () => {
+  saveProfile = (e) => {
+    e.preventDefault();
+
+    const { cardNumber, expiryDate, cardName, cvc } = e.target;
+
+    this.props.setCardData(cardNumber.value, expiryDate.value, cardName.value, cvc.value, this.props.token);
     this.setState({ isEdit: false });
   }
 
-  goToMap = () => {
-    this.props.setPage(PAGES.map.key);
-  }
-
   render() {
-    const { name, cardNumber, cardExpiryDate, cvc, isEdit } = this.state;
+    const { cardName, cardNumber, expiryDate, cvc, isEdit } = this.state;
 
     return (
       <div className='page-container'>
-        <Header setPage={this.props.setPage} page={PAGES.profile.key} />
+        <Header page={PAGES.profile.key} />
         <div className='page-content'>
           <div className='container'>
             <div className={`wrapper ${isEdit ? 'edit-profile-wrapper' : 'gotomap-profile-wrapper'}`}>
@@ -53,14 +64,15 @@ export default class Profile extends Component {
               </p>
               {
                 isEdit
-                  ? <form className='form profile-form'>
+                  ?
+                  <form className='form profile-form' onSubmit={this.saveProfile}>
                     <div className='form__row'>
                       <div className='form__col'>
-                        <Input title='Имя владельца' name='name' type='text' value={name} onChange={this.handleChange} />
+                        <Input title='Имя владельца' name='cardName' type='text' value={cardName} onChange={this.handleChange} />
                         <Input title='Номер карты' name='cardNumber' type='text' value={cardNumber} onChange={this.handleChange} />
                         <div className='form__row'>
                           <div className='form__col'>
-                            <Input title='MM/YY' name='cardExpiryDate' type='text' value={cardExpiryDate} onChange={this.handleChange} />
+                            <Input title='MM/YY' name='expiryDate' type='text' value={expiryDate} onChange={this.handleChange} />
                           </div>
                           <div className='form__col'>
                             <Input title='CVC' name='cvc' type='text' value={cvc} onChange={this.handleChange} />
@@ -71,7 +83,7 @@ export default class Profile extends Component {
                         <div className='card-layout'>
                           <div className='card-layout__header'>
                             <img className='card-layout__small-logo' alt='smallLogo' src={smallLogo} />
-                            <div className='card-layout__card-expiry-date'>{cardExpiryDate}</div>
+                            <div className='card-layout__card-expiry-date'>{expiryDate}</div>
                           </div>
                           <div className='card-layout__content'>
                             <p>{cardNumber}</p>
@@ -83,9 +95,10 @@ export default class Profile extends Component {
                         </div>
                       </div>
                     </div>
-                    <button className='button' onClick={this.saveProfile}>Сохранить</button>
+                    <button className='button' type='submit'>Сохранить</button>
                   </form>
-                  : <button className='button' onClick={this.goToMap}>Перейти на карту</button>
+                  :
+                  <Link className='button' to={PAGES.map.link}>Перейти на карту</Link>
               }
             </div>
           </div>
@@ -94,3 +107,11 @@ export default class Profile extends Component {
     )
   }
 }
+
+const mapStateToProps = function (state) {
+  return {
+    token: state.authorization.token
+  }
+}
+
+export default connect(mapStateToProps, { setCardData, getCardData })(Profile);

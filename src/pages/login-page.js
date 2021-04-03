@@ -1,15 +1,15 @@
-import React, { useContext, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { authenticate, registration } from '../store/actions/authorization';
 import Login from '../components/login';
 import Registration from '../components/registration';
 import icon from '../img/big-logo.svg';
-import { AuthorizationContext } from '../context/authorizationContext';
 import { PAGES } from '../constants';
 import '../scss/login-page.scss';
+import { Redirect } from 'react-router-dom';
 
 const LoginPage = (props) => {
   const [isLogin, setIsLogin] = useState(true);
-  const context = useContext(AuthorizationContext);
 
   const formChange = () => {
     setIsLogin(!isLogin);
@@ -19,17 +19,14 @@ const LoginPage = (props) => {
     e.preventDefault();
 
     const { email, password } = e.target;
-    const isLogin = context.login(email.value, password.value);
-
-    if (isLogin) {
-      props.setPage(PAGES.map.key);
-    }
+    props.authenticate(email.value, password.value);
   }
 
   const registration = (e) => {
     e.preventDefault();
 
-    props.setPage(PAGES.map.key);
+    const { email, password, name } = e.target;
+    props.registration(email.value, password.value, name.value);
   }
 
   return (
@@ -44,12 +41,21 @@ const LoginPage = (props) => {
             : <Registration formChange={formChange} registration={registration} />
         }
       </div>
+      {props.isLoggedIn && <Redirect to={PAGES.map.link} />}
     </div>
   )
 }
 
-LoginPage.propTypes = {
-  setPage: PropTypes.func
+const mapStateToProps = function (state) {
+  return {
+    isLoggedIn: state.authorization.isLoggedIn
+  }
 }
 
-export default LoginPage;
+export default connect(
+  mapStateToProps,
+  {
+    authenticate,
+    registration
+  }
+)(LoginPage);

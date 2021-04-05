@@ -1,0 +1,151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header when clicked on navigation buttons login active 1`] = `
+<header
+  className="header"
+>
+  <div
+    className="header__logo"
+  >
+    <img
+      alt="logo"
+      className="logo__img"
+      src="logo.svg"
+    />
+  </div>
+  <ul
+    className="header__menu menu"
+  >
+    <li>
+      <a
+        className="menu__item "
+        href="/map"
+        id="map"
+        onClick={[Function]}
+      >
+        Карта
+      </a>
+    </li>
+    <li>
+      <a
+        className="menu__item "
+        href="/profile"
+        id="profile"
+        onClick={[Function]}
+      >
+        Профиль
+      </a>
+    </li>
+    <li>
+      <a
+        className="menu__item  menu__item--active"
+        href="/"
+        id="login"
+        onClick={[Function]}
+      >
+        Выйти
+      </a>
+    </li>
+  </ul>
+</header>
+`;
+
+exports[`Header when clicked on navigation buttons map active 1`] = `
+<header
+  className="header"
+>
+  <div
+    className="header__logo"
+  >
+    <img
+      alt="logo"
+      className="logo__img"
+      src="logo.svg"
+    />
+  </div>
+  <ul
+    className="header__menu menu"
+  >
+    <li>
+      <a
+        className="menu__item  menu__item--active"
+        href="/map"
+        id="map"
+        onClick={[Function]}
+      >
+        Карта
+      </a>
+    </li>
+    <li>
+      <a
+        className="menu__item "
+        href="/profile"
+        id="profile"
+        onClick={[Function]}
+      >
+        Профиль
+      </a>
+    </li>
+    <li>
+      <a
+        className="menu__item "
+        href="/"
+        id="login"
+        onClick={[Function]}
+      >
+        Выйти
+      </a>
+    </li>
+  </ul>
+</header>
+`;
+
+exports[`Header when clicked on navigation buttons profile active 1`] = `
+<header
+  className="header"
+>
+  <div
+    className="header__logo"
+  >
+    <img
+      alt="logo"
+      className="logo__img"
+      src="logo.svg"
+    />
+  </div>
+  <ul
+    className="header__menu menu"
+  >
+    <li>
+      <a
+        className="menu__item "
+        href="/map"
+        id="map"
+        onClick={[Function]}
+      >
+        Карта
+      </a>
+    </li>
+    <li>
+      <a
+        className="menu__item  menu__item--active"
+        href="/profile"
+        id="profile"
+        onClick={[Function]}
+      >
+        Профиль
+      </a>
+    </li>
+    <li>
+      <a
+        className="menu__item "
+        href="/"
+        id="login"
+        onClick={[Function]}
+      >
+        Выйти
+      </a>
+    </li>
+  </ul>
+</header>
+`;

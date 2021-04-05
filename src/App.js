@@ -1,34 +1,39 @@
-import React, { useState, useContext } from 'react';
+import React, { Component } from 'react';
+import { Switch, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { getCardData } from './store/actions/card';
 import LoginPage from './pages/login-page';
 import MapPage from './pages/map-page';
 import Profile from './pages/profile-page';
-import { AuthorizationContext } from './context/authorizationContext';
-import './scss/App.scss';
+import { PrivateRoute } from './route/PrivateRoute';
 import { PAGES } from './constants';
+import './scss/App.scss';
 
-const App = () => {
-  const [page, setPage] = useState(PAGES.login.key);
-  const context = useContext(AuthorizationContext);
-
-  const navigateTo = (page) => {
-    setPage(page);
-
-    if (page === PAGES.login.key) {
-      context.logout();
+class App extends Component {
+  componentDidMount() {
+    if (this.props.isLoggedIn) {
+      this.props.getCardData(this.props.token);
     }
   }
 
-  return (
-    <div className='App'>
-      {
-        {
-          [PAGES.login.key]: <LoginPage setPage={navigateTo} />,
-          [PAGES.map.key]: <MapPage setPage={navigateTo} />,
-          [PAGES.profile.key]: <Profile setPage={navigateTo} />
-        }[page]
-      }
-    </div>
-  )
+  render() {
+    return (
+      <div className='App'>
+        <Switch>
+          <Route exact path={PAGES.login.link} component={LoginPage} />
+          <PrivateRoute path={PAGES.map.link} component={MapPage} />
+          <PrivateRoute path={PAGES.profile.link} component={Profile} />
+        </Switch>
+      </div>
+    )
+  }
 }
 
-export default App;
+const mapStateToProps = function (state) {
+  return {
+    token: state.authorization.token,
+    isLoggedIn: state.authorization.isLoggedIn,
+  }
+}
+
+export default connect(mapStateToProps, { getCardData })(App);

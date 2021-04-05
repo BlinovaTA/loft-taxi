@@ -9,8 +9,7 @@ export const setLogIn = async (email, password) => {
       'Content-Type': 'application/json'
     }
   })
-    .then(res => res.json())
-    .then(data => data);
+    .then(res => res.json());
 };
 
 export const setRegistration = async (email, password, name) => {
@@ -26,8 +25,7 @@ export const setRegistration = async (email, password, name) => {
       'Content-Type': 'application/json'
     }
   })
-    .then(res => res.json())
-    .then(data => data);
+    .then(res => res.json());
 };
 
 export const setCardDataToServer = async (cardNumber, expiryDate, cardName, cvc, token) => {
@@ -50,6 +48,5 @@ export const setCardDataToServer = async (cardNumber, expiryDate, cardName, cvc,
 
 export const getCardDataFromServer = async (token) => {
   return fetch(`https://loft-taxi.glitch.me/card?token=${token}`)
-    .then(res => res.json())
-    .then(data => data);
+    .then(res => res.json());
 };

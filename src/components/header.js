@@ -17,15 +17,8 @@ class Header extends Component {
   state = { active: this.props.page };
 
   linkClick = (e) => {
-    switch (e.target.id) {
-      case PAGES.login.key: {
-        this.props.logOut();
-
-        break;
-      }
-
-      default:
-        break;
+    if (e.target.id === PAGES.login.key) {
+      this.props.logOut();
     }
   }
 
@@ -56,10 +49,4 @@ class Header extends Component {
   }
 }
 
-const mapStateToProps = function (state) {
-  return {
-    token: state.authorization.token
-  }
-}
-
-export default connect(mapStateToProps, { logOut, getCardData })(Header);
+export default connect(null, { logOut, getCardData })(Header);

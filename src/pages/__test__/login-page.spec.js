@@ -11,7 +11,7 @@ jest.mock("../../components/registration", () => () => <div>Registration</div>);
 describe("login form", () => {
   it("renders correctly", () => {
     const mockStore = {
-      getState: () => ({ authorization: { isLoggedIn: true } }),
+      getState: () => ({ authorization: { isLoggedIn: true, token: 'TOKEN' } }),
       subscribe: () => { },
       dispatch: () => { },
     };

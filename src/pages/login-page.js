@@ -48,7 +48,8 @@ const LoginPage = (props) => {
 
 const mapStateToProps = function (state) {
   return {
-    isLoggedIn: state.authorization.isLoggedIn
+    isLoggedIn: state.authorization.isLoggedIn,
+    token: state.authorization.token
   }
 }
 

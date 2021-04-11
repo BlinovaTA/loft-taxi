@@ -12,7 +12,7 @@ jest.mock("../pages/profile-page", () => () => <div>Profile content</div>);
 describe("App", () => {
   it("renders correctly", () => {
     const mockStore = {
-      getState: () => ({ authorization: { isLoggedIn: true, token: 'TOKEN'}, address: {addressList: []} }),
+      getState: () => ({ authorization: { isLoggedIn: true, token: 'TOKEN'} }),
       subscribe: () => { },
       dispatch: () => { },
     };

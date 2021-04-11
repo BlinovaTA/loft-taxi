@@ -22,7 +22,7 @@ describe('address saga', () => {
 
         expect(dispatched).toEqual([
           {
-            type: 'ADDRESS_LIST',
+            type: 'SET_ADDRESS_LIST',
             payload: {
               addressList: [{
                 label: 'address1',

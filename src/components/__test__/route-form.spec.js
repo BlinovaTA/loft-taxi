@@ -1,5 +1,5 @@
 import React from 'react';
-import RouteForm from '../RouteForm';
+import RouteForm from '../route-form';
 import { render } from '@testing-library/react';
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
@@ -16,9 +16,7 @@ describe("route form", () => {
           }, {
             label: 'address2',
             value: 'address2'
-          }],
-          startAddress: '',
-          endAddress: '',
+          }]
         },
         card: {
           isPaymentData: false

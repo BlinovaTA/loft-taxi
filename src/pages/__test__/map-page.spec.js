@@ -4,7 +4,7 @@ import { render } from '@testing-library/react';
 
 jest.mock("../../components/map", () => () => <div>Map</div>);
 jest.mock("../../components/header", () => () => <div>Header</div>);
-jest.mock("../../components/RouteForm", () => () => <div>Route form</div>);
+jest.mock("../../components/route-form", () => () => <div>Route form</div>);
 
 describe("map page", () => {
   it("renders correctly", () => {

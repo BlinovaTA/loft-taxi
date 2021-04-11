@@ -35,8 +35,7 @@ class App extends Component {
 const mapStateToProps = function (state) {
   return {
     token: state.authorization.token,
-    isLoggedIn: state.authorization.isLoggedIn,
-    addressList: state.address.addressList
+    isLoggedIn: state.authorization.isLoggedIn
   }
 }
 

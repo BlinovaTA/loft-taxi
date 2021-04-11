@@ -6,11 +6,7 @@ export function* addressListSaga(action) {
   const data = yield call(getAddressListFromServer);
 
   if (data.hasOwnProperty('addresses')) {
-    const addresses = data.addresses.reduce((prev, item) => {
-      prev.push({value: item, label: item});
-
-      return prev;
-    }, []);
+    const addresses = data.addresses.map(item => ({ value: item, label: item }))
 
     yield put(setAddressList(addresses));
   }

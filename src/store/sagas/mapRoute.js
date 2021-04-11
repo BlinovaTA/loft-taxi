@@ -6,7 +6,7 @@ export function* routeSaga(action) {
   const { startAddress, endAddress } = action.payload;
   const data = yield call(getRouteFromServer, startAddress, endAddress);
 
-  if (data.length > 0) {
+  if (data && data.length) {
     yield put(setRoute(data));
   }
 }

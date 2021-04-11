@@ -1,39 +1,43 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import classNames from "classnames";
 import Select from 'react-select'
 import { getRoute } from '../store/actions/mapRoute';
-import { setStartAddress, setEndAddress } from '../store/actions/address';
 import '../scss/route-form.scss';
 import '../scss/select.scss';
 
 class RouteForm extends Component {
   static propTypes = {
-    addressList: PropTypes.array,
-    startAddress: PropTypes.string,
-    endAddress: PropTypes.string
+    addressList: PropTypes.array
+  }
+
+  state = {
+    startAddress: '',
+    endAddress: ''
   }
 
   startAddressChange = (e) => {
-    this.props.setStartAddress(e ? e.value : '');
+    const startAddress = e ? e.value : '';
+    this.setState({ startAddress });
   }
 
   endAddressChange = (e) => {
-    this.props.setEndAddress(e ? e.value : '');
+    const endAddress = e ? e.value : '';
+    this.setState({ endAddress });
   }
 
   sendOrder = (e) => {
     e.preventDefault();
 
-    const { startAddress, endAddress } = this.props;
+    const { startAddress, endAddress } = this.state;
 
-    if (startAddress !== '' && endAddress !== '') {
-      this.props.getRoute(startAddress, endAddress);
-    }
+    this.props.getRoute(startAddress, endAddress);
   }
 
   render() {
-    const { addressList, startAddress, endAddress, isPaymentData } = this.props;
+    const { addressList, isPaymentData } = this.props;
+    const { startAddress, endAddress } = this.state;
 
     const style = {
       control: base => ({
@@ -42,6 +46,8 @@ class RouteForm extends Component {
         boxShadow: "none"
       })
     };
+
+    const disabled = startAddress === '' || endAddress === '';
 
     return (
       <form className='route-form' onSubmit={this.sendOrder}>
@@ -70,7 +76,14 @@ class RouteForm extends Component {
                 />
               </div>
             </div>
-            <button data-testid="order" type='submit' className='form__button button'>Заказать</button>
+            <button
+              data-testid="order"
+              type='submit'
+              className={classNames('form__button', 'button', { ['button--disabled']: disabled })}
+              disabled={disabled}
+            >
+              Заказать
+            </button>
           </>
           :
           <div className="route-form__no-payment-data" data-testid="no-payment" >Для заказа введите платежные данные на странице <b>Профиль</b></div>}
@@ -82,10 +95,8 @@ class RouteForm extends Component {
 const mapStateToProps = function (state) {
   return {
     addressList: state.address.addressList,
-    startAddress: state.address.startAddress,
-    endAddress: state.address.endAddress,
     isPaymentData: state.card.isPaymentData
   }
 }
 
-export default connect(mapStateToProps, { setStartAddress, setEndAddress, getRoute })(RouteForm)
+export default connect(mapStateToProps, { getRoute })(RouteForm)

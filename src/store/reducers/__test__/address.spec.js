@@ -20,18 +20,4 @@ describe("address", () => {
         }]
       })
   });
-
-  it('returns start address', () => {
-    expect(address({}, setStartAddress('address')))
-      .toEqual({
-        startAddress: 'address'
-      })
-  });
-
-  it('returns end address', () => {
-    expect(address({}, setEndAddress('address')))
-      .toEqual({
-        endAddress: 'address'
-      })
-  });
 });

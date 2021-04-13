@@ -7,7 +7,8 @@ const initialState = {
   cardNumber: localStorageData.cardNumber,
   expiryDate: localStorageData.expiryDate,
   cardName: localStorageData.cardName,
-  cvc: localStorageData.cvc
+  cvc: localStorageData.cvc,
+  isPaymentData: false
 }
 
 export default function card(state = initialState, action) {
@@ -16,11 +17,14 @@ export default function card(state = initialState, action) {
       const { cardNumber, expiryDate, cardName, cvc } = action.payload;
       setCardDataToLocalStorage(cardNumber, expiryDate, cardName, cvc);
 
+      const isPaymentData = Boolean(cardNumber && expiryDate && cardName && cvc);
+
       return {
         cardNumber: cardNumber,
         expiryDate: expiryDate,
         cardName: cardName,
-        cvc: cvc
+        cvc: cvc,
+        isPaymentData: isPaymentData
       };
     }
 

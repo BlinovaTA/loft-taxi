@@ -14,4 +14,10 @@
   &:active {
     background: #FFA842;
   }
+
+  &--disabled {
+    background: #D8D7D5;
+    color: #737373;
+    cursor: default;
+  }
 }

@@ -1,13 +1,14 @@
-import { card } from '../card';
+import { setCardDataSaga, getCardDataSaga } from '../card';
 import { setCardData, getCardData } from '../../actions/card';
 import { setCardDataToServer, getCardDataFromServer } from '../../../api';
+import { recordSaga } from "./recordSaga";
 
 jest.mock('../../../api', () => ({
   getCardDataFromServer: jest.fn(() => ({ id: 'testid', cardNumber: '1234 1234 1234 1234', expiryDate: '12/21', cardName: 'testname', cvc: '123' })),
   setCardDataToServer: jest.fn(() => true)
 }));
 
-describe('card middleware', () => {
+describe('card saga', () => {
   afterAll(jest.clearAllMocks);
 
   describe('#SET_CARD_DATA', () => {
@@ -15,23 +16,22 @@ describe('card middleware', () => {
       it('card through api', async () => {
         setCardDataToServer.mockImplementation(async () => true);
 
-        const dispatch = jest.fn();
-
-        await card({ dispatch })()(
+        const dispatched = await recordSaga(
+          setCardDataSaga,
           setCardData('cardNumber', 'expiryDate', 'cardName', 'cvc', 'token')
         );
 
-        expect(setCardDataToServer).toBeCalledWith('cardNumber', 'expiryDate', 'cardName', 'cvc', 'token');
-
-        expect(dispatch).toBeCalledWith({
-          type: 'SET_CARD',
-          payload: {
-            cardNumber: 'cardNumber',
-            expiryDate: 'expiryDate',
-            cardName: 'cardName',
-            cvc: 'cvc'
+        expect(dispatched).toEqual([
+          {
+            type: 'SET_CARD',
+            payload: {
+              cardNumber: 'cardNumber',
+              expiryDate: 'expiryDate',
+              cardName: 'cardName',
+              cvc: 'cvc'
+            }
           }
-        });
+        ]);
       });
     });
 
@@ -39,13 +39,12 @@ describe('card middleware', () => {
       it('card through api', async () => {
         setCardDataToServer.mockImplementation(() => false);
 
-        const dispatch = jest.fn();
-
-        await card({ dispatch })()(
+        const dispatched = await recordSaga(
+          setCardDataSaga,
           setCardData('cardNumber', 'expiryDate', 'cardName', 'cvc', 'token')
         );
 
-        expect(dispatch).not.toBeCalled();
+        expect(dispatched).toEqual([]);
       });
     });
   });
@@ -61,36 +60,35 @@ describe('card middleware', () => {
           cvc: '123'
         }));
 
-        const dispatch = jest.fn();
-
-        await card({ dispatch })()(
+        const dispatched = await recordSaga(
+          getCardDataSaga,
           getCardData('token')
         );
 
-        expect(getCardDataFromServer).toBeCalledWith('token');
-
-        expect(dispatch).toBeCalledWith({
-          type: 'SET_CARD',
-          payload: {
-            cardNumber: '1234 1234 1234 1234',
-            expiryDate: '12/21',
-            cardName: 'testname',
-            cvc: '123'
+        expect(dispatched).toEqual([
+          {
+            type: 'SET_CARD',
+            payload: {
+              cardNumber: '1234 1234 1234 1234',
+              expiryDate: '12/21',
+              cardName: 'testname',
+              cvc: '123'
+            }
           }
-        });
+        ]);
       });
     });
 
     describe('with wrong credentials', () => {
       it('card through api', async () => {
         getCardDataFromServer.mockImplementation(() => ({ success: false }));
-        const dispatch = jest.fn();
 
-        await card({ dispatch })()(
+        const dispatched = await recordSaga(
+          getCardDataSaga,
           getCardData('token')
         );
 
-        expect(dispatch).not.toBeCalled();
+        expect(dispatched).toEqual([]);
       });
     });
   });

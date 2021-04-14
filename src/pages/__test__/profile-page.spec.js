@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 describe("login form", () => {
   it("renders correctly", () => {
     const mockStore = {
-      getState: () => ({ authorization: { token: 'TOKEN' } }),
+      getState: () => ({ authorization: { token: 'TOKEN' }, card: { error: 'error' } }),
       subscribe: () => { },
       dispatch: () => { },
     };

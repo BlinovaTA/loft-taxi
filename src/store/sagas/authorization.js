@@ -1,20 +1,19 @@
-import { AUTHENTICATE, REGISTRATION, logIn } from "../actions/authorization";
-import { setCard } from "../actions/card";
-import { setLogIn, getCardDataFromServer, setRegistrationToServer } from "../../api";
+import { AUTHENTICATE, REGISTRATION, logInSuccess, logInFailure } from "../actions/authorization";
+import { setLogIn, setRegistrationToServer } from "../../api";
 import { takeEvery, call, put } from "redux-saga/effects";
 
 export function* authenticateSaga(action) {
-  const { email, password } = action.payload;
-  const data = yield call(setLogIn, email, password);
+  try {
+    const { email, password } = action.payload;
+    const data = yield call(setLogIn, email, password);
 
-  if (data.success) {
-    yield put(logIn(data.token));
-
-    const cardData = yield call(getCardDataFromServer, data.token);
-
-    if (cardData.hasOwnProperty('id')) {
-      yield put(setCard(cardData.cardNumber, cardData.expiryDate, cardData.cardName, cardData.cvc));
+    if (data.success) {
+      yield put(logInSuccess(data.token));
+    } else {
+      yield put(logInFailure({authorization: 'Ошибка авторизации', registration: ''}));
     }
+  } catch {
+    yield put(logInFailure({authorization: 'Сервер не отвечает', registration: ''}));
   }
 }
 
@@ -23,13 +22,19 @@ export function* authorizationSaga() {
 }
 
 export function* setRegistration(action) {
-  const { email, password, name } = action.payload;
-  const data = yield call(setRegistrationToServer, email, password, name);
+  try {
+    const { email, password, name } = action.payload;
+    const data = yield call(setRegistrationToServer, email, password, name);
 
-  if (data.success) {
-    yield put(logIn(data.token));
-
+    if (data.success) {
+      yield put(logInSuccess(data.token));
+    } else {
+      yield put(logInFailure({authorization: '', registration: 'Ошибка регистрации'}));
+    }
+  } catch {
+    yield put(logInFailure({authorization: '', registration: 'Сервер не отвечает'}));
   }
+
 }
 
 export function* registrationSaga() {

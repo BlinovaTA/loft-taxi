@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logOut } from '../store/actions/authorization';
-import { getCardData } from '../store/actions/card';
 import { PAGES, PAGES_KEYS } from '../constants';
 import logo from '../img/logo.svg';
 import '../scss/header.scss';
@@ -49,4 +48,4 @@ class Header extends Component {
   }
 }
 
-export default connect(null, { logOut, getCardData })(Header);
+export default connect(null, { logOut })(Header);

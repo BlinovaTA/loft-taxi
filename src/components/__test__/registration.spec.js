@@ -5,7 +5,8 @@ import { shallow } from 'enzyme';
 
 describe("registration form", () => {
   it("renders correctly", () => {
-    const { getByLabelText } = render(<Registration />);
+    const { getByLabelText } = render(<Registration error={'error'} />);
+
     expect(getByLabelText("Email*")).toHaveAttribute("name", "email");
     expect(getByLabelText("Как вас зовут?*")).toHaveAttribute("name", "name");
     expect(getByLabelText("Придумайте пароль*")).toHaveAttribute("name", "password");

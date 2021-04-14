@@ -15,9 +15,17 @@
     background: #FFA842;
   }
 
+  &:hover {
+    color: #000;
+  }
+
   &--disabled {
     background: #D8D7D5;
     color: #737373;
     cursor: default;
+
+    &:hover {
+      color: #737373;
+    }
   }
 }

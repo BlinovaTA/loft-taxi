@@ -8,25 +8,25 @@ import { PAGES } from '../constants';
 import '../scss/login-page.scss';
 import { Redirect } from 'react-router-dom';
 
-const LoginPage = (props) => {
+const LoginPage = ({ authorization, isLoggedIn, authenticate, registration }) => {
   const [isLogin, setIsLogin] = useState(true);
 
   const formChange = () => {
     setIsLogin(!isLogin);
   }
 
-  const authorization = (e) => {
+  const setAuthorization = (e) => {
     e.preventDefault();
 
     const { email, password } = e.target;
-    props.authenticate(email.value, password.value);
+    authenticate(email.value, password.value);
   }
 
-  const registration = (e) => {
+  const setRegistration = (e) => {
     e.preventDefault();
 
     const { email, password, name } = e.target;
-    props.registration(email.value, password.value, name.value);
+    registration(email.value, password.value, name.value);
   }
 
   return (
@@ -37,18 +37,18 @@ const LoginPage = (props) => {
       <div className='login-page__map'>
         {
           isLogin
-            ? <Login formChange={formChange} authorization={authorization} />
-            : <Registration formChange={formChange} registration={registration} />
+            ? <Login formChange={formChange} authorization={setAuthorization} error={authorization.error.authorization} />
+            : <Registration formChange={formChange} registration={setRegistration} error={authorization.error.registration} />
         }
       </div>
-      {props.isLoggedIn && <Redirect to={PAGES.map.link} />}
+      {authorization.isLoggedIn && <Redirect to={PAGES.map.link} />}
     </div>
   )
 }
 
 const mapStateToProps = function (state) {
   return {
-    isLoggedIn: state.authorization.isLoggedIn
+    authorization: state.authorization
   }
 }
 

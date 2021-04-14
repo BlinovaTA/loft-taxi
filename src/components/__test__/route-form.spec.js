@@ -10,16 +10,20 @@ describe("route form", () => {
     const mockStore = {
       getState: () => ({
         address: {
-          addressList: [{
+          list: [{
             label: 'address1',
             value: 'address1'
           }, {
             label: 'address2',
             value: 'address2'
-          }]
+          }],
+          error: ''
         },
         card: {
           isPaymentData: false
+        },
+        mapRoute: {
+          error: ''
         }
       }),
       subscribe: () => { },
@@ -44,18 +48,20 @@ describe("route form", () => {
     const mockStore = {
       getState: () => ({
         address: {
-          addressList: [{
+          list: [{
             label: 'address1',
             value: 'address1'
           }, {
             label: 'address2',
             value: 'address2'
           }],
-          startAddress: '',
-          endAddress: '',
+          error: ''
         },
         card: {
           isPaymentData: true
+        },
+        mapRoute: {
+          error: ''
         }
       }),
       subscribe: () => { },

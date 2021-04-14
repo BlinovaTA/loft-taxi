@@ -1,13 +1,19 @@
-import { GET_ROUTE, setRoute } from "../actions/mapRoute";
+import { GET_ROUTE, setRouteSuccess, setRouteFailure } from "../actions/mapRoute";
 import { getRouteFromServer } from '../../api';
 import { takeEvery, call, put } from "redux-saga/effects";
 
 export function* routeSaga(action) {
-  const { startAddress, endAddress } = action.payload;
-  const data = yield call(getRouteFromServer, startAddress, endAddress);
+  try {
+    const { startAddress, endAddress } = action.payload;
+    const data = yield call(getRouteFromServer, startAddress, endAddress);
 
-  if (data && data.length) {
-    yield put(setRoute(data));
+    if (data && data.length) {
+      yield put(setRouteSuccess(data));
+    } else {
+      yield put(setRouteFailure('Ошибка получения маршрута'));
+    }
+  } catch {
+    yield put(setRouteFailure('Сервер не отвечает'));
   }
 }
 

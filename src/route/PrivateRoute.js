@@ -3,14 +3,7 @@ import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { PAGES } from '../constants';
 
-const mapStateToProps = function (state) {
-  return {
-    isLoggedIn: state.authorization.isLoggedIn
-  }
-}
-
-export const PrivateRoute = connect(mapStateToProps)(
-  ({ component: Component, isLoggedIn, ...rest }) => (
+export const PrivateRoute = ({ component: Component, isLoggedIn, ...rest }) => (
     <Route
       {...rest}
       render={(props) =>
@@ -21,5 +14,12 @@ export const PrivateRoute = connect(mapStateToProps)(
         )
       }
     />
-  )
-);
+  );
+
+const mapStateToProps = function (state) {
+  return {
+    isLoggedIn: state.authorization.isLoggedIn
+  }
+}
+
+export default connect(mapStateToProps)(PrivateRoute);

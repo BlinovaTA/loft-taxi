@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { setCardData, getCardData } from '../store/actions/card';
+import { setCardData } from '../store/actions/card';
 import { getCardDataFromLocalStorage } from '../localstorage';
 import Header from '../components/header';
 import Input from '../components/input';
@@ -47,6 +47,7 @@ class Profile extends Component {
 
   render() {
     const { cardName, cardNumber, expiryDate, cvc, isEdit } = this.state;
+    const { error } = this.props;
 
     return (
       <div className='page-container'>
@@ -57,9 +58,9 @@ class Profile extends Component {
               <h1 className='title'>Профиль</h1>
               <p className='subtitle'>
                 {
-                  isEdit
-                    ? 'Введите платежные данные'
-                    : 'Платёжные данные обновлены. Теперь вы можете заказывать такси.'
+                  isEdit ? 'Введите платежные данные' :
+                    error ?  error  :
+                      'Платёжные данные обновлены. Теперь вы можете заказывать такси.'
                 }
               </p>
               {
@@ -110,8 +111,9 @@ class Profile extends Component {
 
 const mapStateToProps = function (state) {
   return {
-    token: state.authorization.token
+    token: state.authorization.token,
+    error: state.card.error
   }
 }
 
-export default connect(mapStateToProps, { setCardData, getCardData })(Profile);
+export default connect(mapStateToProps, { setCardData })(Profile);

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { authenticate, registration } from '../store/actions/authorization';
 import Login from '../components/login';
 import Registration from '../components/registration';
 import icon from '../img/big-logo.svg';
@@ -8,25 +8,11 @@ import { PAGES } from '../constants';
 import '../scss/login-page.scss';
 import { Redirect } from 'react-router-dom';
 
-const LoginPage = ({ authorization, isLoggedIn, authenticate, registration }) => {
+const LoginPage = ({ authorization }) => {
   const [isLogin, setIsLogin] = useState(true);
 
   const formChange = () => {
     setIsLogin(!isLogin);
-  }
-
-  const setAuthorization = (e) => {
-    e.preventDefault();
-
-    const { email, password } = e.target;
-    authenticate(email.value, password.value);
-  }
-
-  const setRegistration = (e) => {
-    e.preventDefault();
-
-    const { email, password, name } = e.target;
-    registration(email.value, password.value, name.value);
   }
 
   return (
@@ -37,13 +23,17 @@ const LoginPage = ({ authorization, isLoggedIn, authenticate, registration }) =>
       <div className='login-page__map'>
         {
           isLogin
-            ? <Login formChange={formChange} authorization={setAuthorization} error={authorization.error.authorization} />
-            : <Registration formChange={formChange} registration={setRegistration} error={authorization.error.registration} />
+            ? <Login formChange={formChange} error={authorization.error.authorization} />
+            : <Registration formChange={formChange} error={authorization.error.registration} />
         }
       </div>
       {authorization.isLoggedIn && <Redirect to={PAGES.map.link} />}
     </div>
   )
+}
+
+LoginPage.propTypes = {
+  authorization: PropTypes.object
 }
 
 const mapStateToProps = function (state) {
@@ -52,10 +42,4 @@ const mapStateToProps = function (state) {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    authenticate,
-    registration
-  }
-)(LoginPage);
+export default connect(mapStateToProps)(LoginPage);

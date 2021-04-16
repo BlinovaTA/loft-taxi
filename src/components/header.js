@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 class Header extends Component {
   static propTypes = {
     page: PropTypes.string,
+    logOut: PropTypes.func
   }
 
   state = { active: this.props.page };

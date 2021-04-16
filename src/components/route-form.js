@@ -11,7 +11,10 @@ import '../scss/select.scss';
 
 class RouteForm extends Component {
   static propTypes = {
-    addressList: PropTypes.array
+    getRoute: PropTypes.func,
+    address: PropTypes.object,
+    isPaymentData: PropTypes.bool,
+    routeError: PropTypes.string
   }
 
   state = {

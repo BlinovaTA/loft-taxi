@@ -1,14 +1,12 @@
 import { SET_CARD_SUCCESS, SET_CARD_FAILURE } from '../actions/card';
-import { setCardDataToLocalStorage, getCardDataFromLocalStorage } from '../../localstorage';
 
-const localStorageData = getCardDataFromLocalStorage();
 
 const initialState = {
-  cardNumber: localStorageData.cardNumber,
-  expiryDate: localStorageData.expiryDate,
-  cardName: localStorageData.cardName,
-  cvc: localStorageData.cvc,
-  isPaymentData: localStorageData.isPaymentData,
+  cardNumber: '',
+  expiryDate: '',
+  cardName: '',
+  cvc: '',
+  isPaymentData: '',
   error: ''
 }
 
@@ -16,7 +14,6 @@ export default function card(state = initialState, action) {
   switch (action.type) {
     case SET_CARD_SUCCESS: {
       const { cardNumber, expiryDate, cardName, cvc } = action.payload;
-      setCardDataToLocalStorage(cardNumber, expiryDate, cardName, cvc);
 
       return {
         cardNumber: cardNumber,

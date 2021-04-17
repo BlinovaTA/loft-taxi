@@ -4,7 +4,6 @@ import { connect, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { setCardData } from '../store/actions/card';
-import { getCardDataFromLocalStorage } from '../localstorage';
 import Header from '../components/header';
 import Input from '../components/input';
 import smallLogo from '../img/small-logo.svg';
@@ -14,28 +13,33 @@ import { PAGES } from '../constants';
 import '../scss/form.scss';
 import '../scss/card-layout.scss';
 
-const Profile = ({ useDispatchHook = useDispatch, token, error }) => {
+const Profile = ({ useDispatchHook = useDispatch, token, card }) => {
   const dispatch = useDispatchHook();
   const { register, handleSubmit } = useForm();
   const [isEdit, setIsEdit] = useState(true);
-  const [cardNumber, setCardNumber] = useState('');
-  const [expiryDate, setExpiryDate] = useState('');
-  const [cardName, setCardName] = useState('');
-  const [cvc, setCVC] = useState('');
+  const [cardNumber, setCardNumber] = useState(card.cardNumber);
+  const [expiryDate, setExpiryDate] = useState(card.expiryDate);
+  const [cardName, setCardName] = useState(card.cardName);
+  const [cvc, setCVC] = useState(card.cvc);
 
   useEffect(() => {
-    const localStorageData = getCardDataFromLocalStorage();
-
-    setCardNumber(localStorageData.cardNumber);
-    setExpiryDate(localStorageData.expiryDate);
-    setCardName(localStorageData.cardName);
-    setCVC(localStorageData.cvc);
-  }, []);
+    setCardNumber(card.cardNumber);
+    setExpiryDate(card.expiryDate);
+    setCardName(card.cardName);
+    setCVC(card.cvc);
+  }, [card.cardNumber, card.expiryDate, card.cardName, card.cvc]);
 
   const onSubmit = (data) => {
     const { cardNumber, expiryDate, cardName, cvc } = data;
 
-    dispatch(setCardData(cardNumber, expiryDate, cardName, cvc, token));
+    dispatch(setCardData(
+      cardNumber === '' ? card.cardNumber : cardNumber,
+      expiryDate === '' ? card.expiryDate : expiryDate,
+      cardName === '' ? card.cardName : cardName,
+      cvc === '' ? card.cvc : cvc,
+      token
+    ));
+
     setIsEdit(false);
   };
 
@@ -49,7 +53,7 @@ const Profile = ({ useDispatchHook = useDispatch, token, error }) => {
             <p className='subtitle'>
               {
                 isEdit ? 'Введите платежные данные' :
-                  error ? error :
+                  card.error ? card.error :
                     'Платёжные данные обновлены. Теперь вы можете заказывать такси.'
               }
             </p>
@@ -101,13 +105,13 @@ const Profile = ({ useDispatchHook = useDispatch, token, error }) => {
 Profile.propTypes = {
   useDispatchHook: PropTypes.func,
   token: PropTypes.string,
-  error: PropTypes.string
+  card: PropTypes.object
 }
 
 const mapStateToProps = function (state) {
   return {
     token: state.authorization.token,
-    error: state.card.error
+    card: state.card
   }
 }
 

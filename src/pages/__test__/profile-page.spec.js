@@ -10,7 +10,18 @@ describe("profile page", () => {
   it("renders correctly", async () => {
     const mockDispatch = jest.fn();
     const mockStore = {
-      getState: () => ({ authorization: { token: 'TOKEN' }, card: { error: 'error' } }),
+      getState: () => ({
+        authorization: {
+          token: 'TOKEN'
+        },
+        card: {
+          error: 'error',
+          cardNumber: 'cardNumber',
+          expiryDate: 'expiryDate',
+          cardName: 'cardName',
+          cvc: 'cvc'
+        }
+      }),
       subscribe: () => { },
       dispatch: () => { },
     };

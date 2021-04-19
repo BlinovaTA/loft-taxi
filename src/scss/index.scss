@@ -1,6 +1,7 @@
 @import 'normalize.css';
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 @import url('https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css');
+@import 'antd/dist/antd.css';
 
 html,
 body {
@@ -23,6 +24,10 @@ ul {
 
 a {
   text-decoration: none;
+
+  &:hover {
+    color: #FFA842;
+  }
 }
 
 .map-wrapper {
@@ -37,4 +42,12 @@ a {
   right: 0;
   left: 0;
   bottom: 0;
+}
+
+.ant-spin-text {
+  color: #FDBF5A;
+}
+
+.ant-spin-dot-item {
+  background-color: #FDBF5A;
 }

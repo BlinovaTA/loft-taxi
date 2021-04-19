@@ -20,22 +20,22 @@
 
 .login-wrapper {
   width: 580px;
-  height: 541px;
+  min-height: 541px;
 }
 
 .registration-wrapper {
   width: 580px;
-  height: 631px;
+  min-height: 631px;
 }
 
 .edit-profile-wrapper {
   width: 888px;
-  height: 588px;
+  min-height: 588px;
 }
 
 .gotomap-profile-wrapper {
   width: 822px;
-  height: 345px;
+  min-height: 345px;
 }
 
 .title {
@@ -56,7 +56,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 44px;
+  padding: 10px 44px 44px;
   box-sizing: border-box;
 
   &__block {
@@ -119,4 +119,8 @@
       margin-right: 0;
     }
   }
+}
+
+.title-container {
+  margin-top: 44px;
 }

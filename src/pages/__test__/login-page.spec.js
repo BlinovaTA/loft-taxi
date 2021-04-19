@@ -11,7 +11,7 @@ jest.mock("../../components/registration", () => () => <div>Registration</div>);
 describe("login form", () => {
   it("renders correctly", () => {
     const mockStore = {
-      getState: () => ({ authorization: { isLoggedIn: true } }),
+      getState: () => ({ authorization: { isLoggedIn: true, error: { authorization: '', registration: '' } } }),
       subscribe: () => { },
       dispatch: () => { },
     };
@@ -24,7 +24,7 @@ describe("login form", () => {
           <LoginPage />
         </Provider>
       </Router>);
-      
+
     expect(container.innerHTML).toMatch("Login");
   })
 })

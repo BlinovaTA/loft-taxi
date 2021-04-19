@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+- stable
+cache:
+  direstories:
+  - node_modules
+script:
+- npm test
+deploy:
+  provider: heroku
+  api_key:
+    secure: Kq5YFO6CA7sGy4rSOMac3Ou1Sfpx3bcCURZXNNOy8kFXPzyDOWByp0x9ZWhsv7NCFan0QWivZB+uciu3esPDeHlnDBnQUaMUdfoMx+OOsD9coiyG5+NjyWVFkW8DnNRiNxSJuUDlFG6YSdy1VeF7L1Iads9/MoceGDxu0EhqmfAIaQUt7uPEiDXj61LspRFjN/s+BkMxOjXBrqeiYBaZJJ5RQ1upd+/zl4pk6Exjkcaui9GP+UREA1K564eOUK4dIM9Eb0LV0CsO9sH/LjDpNMHOEsvxPAsCGeLWTl0pryiBGcipZvRxXFz4LfHzmi6TT1EqrWz2Z/f95XMximqOx4t5Co25UVM8AB30GWT3leA39rrzeNtsSj9ZHG1sodb6/c19PHJ8V59QMB21fU+i0wKz46//P4Xox178Zwf7XQxomZKdNr7jGGedLZHgT5Kpxqb3/+4gt2EgpJ6WTgNSmq10aS8WGwKrgbQQnAA5BQJtxyp6ZDiH0thvREOE2mYTMKBLkHI2tpl/cYgSGymmoyAfojDAxtKFhkuy8/z7BfY0CfMoTB4Rizwby9GgtmlBXqNlhCXzv8/MSSpRvemgTpjktfK72tfb37vLQPGfKhGEik7Cxl0HcrUZDnBLzRRjD1p6wAUT5c9GZzMJc+nQPZTRd3+DW/+uAmv0OEcd8RA=
+  app: shielded-tundra-34824

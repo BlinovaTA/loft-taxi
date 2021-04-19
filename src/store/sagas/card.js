@@ -1,13 +1,19 @@
-import { SET_CARD_DATA, GET_CARD_DATA, setCard } from "../actions/card";
+import { SET_CARD_DATA, GET_CARD_DATA, setCardSuccess, setCardFailure } from "../actions/card";
 import { setCardDataToServer, getCardDataFromServer } from '../../api';
 import { takeEvery, call, put } from "redux-saga/effects";
 
 export function* setCardDataSaga(action) {
-  const { cardNumber, expiryDate, cardName, cvc, token } = action.payload;
-  const success = yield call(setCardDataToServer, cardNumber, expiryDate, cardName, cvc, token);
+  try {
+    const { cardNumber, expiryDate, cardName, cvc, token } = action.payload;
+    const success = yield call(setCardDataToServer, cardNumber, expiryDate, cardName, cvc, token);
 
-  if (success) {
-    yield put(setCard(cardNumber, expiryDate, cardName, cvc));
+    if (success) {
+      yield put(setCardSuccess(cardNumber, expiryDate, cardName, cvc));
+    } else {
+      yield put(setCardFailure('Не удалось сохранить данные карты на сервер'));
+    }
+  } catch {
+    yield put(setCardFailure('Сервер не отвечает'));
   }
 }
 
@@ -16,11 +22,17 @@ export function* setCardData() {
 }
 
 export function* getCardDataSaga(action) {
-  const { token } = action.payload;
-  const data = yield call(getCardDataFromServer, token);
+  try {
+    const { token } = action.payload;
+    const data = yield call(getCardDataFromServer, token);
 
-  if (data.hasOwnProperty('id')) {
-    yield put(setCard(data.cardNumber, data.expiryDate, data.cardName, data.cvc));
+    if (data.hasOwnProperty('id')) {
+      yield put(setCardSuccess(data.cardNumber, data.expiryDate, data.cardName, data.cvc));
+    } else {
+      yield put(setCardFailure('Не удалось получить данные карты с сервера'));
+    }
+  } catch {
+    yield put(setCardFailure('Сервер не отвечает'));
   }
 }
 

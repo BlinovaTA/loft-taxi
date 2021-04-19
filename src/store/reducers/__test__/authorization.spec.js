@@ -1,16 +1,28 @@
-import authorization from '../authorization'
-import { logIn, logOut } from '../../actions/authorization'
+import authorization from '../authorization';
+import { logInSuccess, logInFailure, logOut } from '../../actions/authorization';
 
 describe("authorization", () => {
-  describe("#LOG_IN", () => {
-    it('returns isLoggedIn true and token', () => {
-      expect(authorization({}, logIn('token'))).toEqual({ isLoggedIn: true, token: 'token' })
-    });
+  it('#LOG_IN_SUCCESS', () => {
+    expect(authorization({}, logInSuccess('token'))).toEqual({
+      isLoggedIn: true,
+      token: 'token',
+      error: ''
+    })
   });
 
-  describe("#LOG_OUT", () => {
-    it('returns isLoggedIn false and empty token', () => {
-      expect(authorization({}, logOut())).toEqual({ isLoggedIn: false, token: '' })
-    });
+  it('#LOG_IN_FAILURE', () => {
+    expect(authorization({}, logInFailure('error'))).toEqual({
+      isLoggedIn: false,
+      token: '',
+      error: 'error'
+    })
+  });
+
+  it('#LOG_OUT', () => {
+    expect(authorization({}, logOut())).toEqual({
+      isLoggedIn: false,
+      token: '',
+      error: ''
+    })
   });
 });

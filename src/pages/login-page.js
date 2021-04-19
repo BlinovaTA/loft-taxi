@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { authenticate, registration } from '../store/actions/authorization';
 import Login from '../components/login';
 import Registration from '../components/registration';
 import icon from '../img/big-logo.svg';
@@ -8,25 +8,11 @@ import { PAGES } from '../constants';
 import '../scss/login-page.scss';
 import { Redirect } from 'react-router-dom';
 
-const LoginPage = (props) => {
+const LoginPage = ({ authorization }) => {
   const [isLogin, setIsLogin] = useState(true);
 
   const formChange = () => {
     setIsLogin(!isLogin);
-  }
-
-  const authorization = (e) => {
-    e.preventDefault();
-
-    const { email, password } = e.target;
-    props.authenticate(email.value, password.value);
-  }
-
-  const registration = (e) => {
-    e.preventDefault();
-
-    const { email, password, name } = e.target;
-    props.registration(email.value, password.value, name.value);
   }
 
   return (
@@ -37,25 +23,23 @@ const LoginPage = (props) => {
       <div className='login-page__map'>
         {
           isLogin
-            ? <Login formChange={formChange} authorization={authorization} />
-            : <Registration formChange={formChange} registration={registration} />
+            ? <Login formChange={formChange} error={authorization.error.authorization} />
+            : <Registration formChange={formChange} error={authorization.error.registration} />
         }
       </div>
-      {props.isLoggedIn && <Redirect to={PAGES.map.link} />}
+      {authorization.isLoggedIn && <Redirect to={PAGES.map.link} />}
     </div>
   )
 }
 
+LoginPage.propTypes = {
+  authorization: PropTypes.object
+}
+
 const mapStateToProps = function (state) {
   return {
-    isLoggedIn: state.authorization.isLoggedIn
+    authorization: state.authorization
   }
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    authenticate,
-    registration
-  }
-)(LoginPage);
+export default connect(mapStateToProps)(LoginPage);

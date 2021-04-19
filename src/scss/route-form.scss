@@ -1,7 +1,7 @@
 .route-form {
   position: absolute;
   width: 486px;
-  height: 210px;
+  min-height: 210px;
   z-index: 10;
   background: #fff;
   top: 160px;
@@ -13,9 +13,14 @@
   align-items: center;
   justify-content: center;
 
-  &__no-payment-data {
+  &__no-data {
     font-size: 20px;
     text-align: center;
     margin: 24px;
+  }
+
+  &__alert {
+    width: 100%;
+    border-radius: 10px 10px 0 0;
   }
 }

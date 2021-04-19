@@ -1,5 +1,5 @@
 import { addressListSaga } from '../address';
-import { getAddressList } from '../../actions/address';
+import { getAddressList, SET_ADDRESS_LIST_FAILURE, SET_ADDRESS_LIST_SUCCESS } from '../../actions/address';
 import { getAddressListFromServer } from '../../../api';
 import { recordSaga } from "./recordSaga";
 
@@ -10,44 +10,45 @@ jest.mock('../../../api', () => ({
 describe('address saga', () => {
   afterAll(jest.clearAllMocks);
 
-  describe('#ADDRESS_LIST', () => {
-    describe('with correct credentials', () => {
-      it('card through api', async () => {
-        getAddressListFromServer.mockImplementation(async () => ({ "addresses": ['address1', 'address2'] }));
+  it('correct credential', async () => {
+    getAddressListFromServer.mockImplementation(async () => ({ "addresses": ['address1', 'address2'] }));
 
-        const dispatched = await recordSaga(
-          addressListSaga,
-          getAddressList()
-        );
+    const dispatched = await recordSaga(
+      addressListSaga,
+      getAddressList()
+    );
 
-        expect(dispatched).toEqual([
-          {
-            type: 'SET_ADDRESS_LIST',
-            payload: {
-              addressList: [{
-                label: 'address1',
-                value: 'address1'
-              }, {
-                label: 'address2',
-                value: 'address2'
-              }]
-            }
-          }
-        ]);
-      });
-    });
+    expect(dispatched).toEqual([
+      {
+        type: SET_ADDRESS_LIST_SUCCESS,
+        payload: {
+          list: [{
+            label: 'address1',
+            value: 'address1'
+          }, {
+            label: 'address2',
+            value: 'address2'
+          }]
+        }
+      }
+    ]);
+  });
 
-    describe('with wrong credentials', () => {
-      it('card through api', async () => {
-        getAddressListFromServer.mockImplementation(() => false);
+  it('wrong credentials', async () => {
+    getAddressListFromServer.mockImplementation(() => false);
 
-        const dispatched = await recordSaga(
-          addressListSaga,
-          getAddressList()
-        );
+    const dispatched = await recordSaga(
+      addressListSaga,
+      getAddressList()
+    );
 
-        expect(dispatched).toEqual([]);
-      });
-    });
+    expect(dispatched).toEqual([
+      {
+        type: SET_ADDRESS_LIST_FAILURE,
+        payload: {
+          error: 'Ошибка загрузки списка адресов',
+        }
+      }
+    ]);
   });
 });

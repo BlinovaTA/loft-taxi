@@ -1,27 +1,18 @@
 import { authenticateSaga, setRegistration } from "../authorization";
-import { authenticate, registration } from "../../actions/authorization";
+import { authenticate, registration, LOG_IN_FAILURE, LOG_IN_SUCCESS } from "../../actions/authorization";
 import { recordSaga } from "./recordSaga";
-import { setLogIn, setRegistrationToServer, getCardDataFromServer } from '../../../api';
+import { setLogIn, setRegistrationToServer } from '../../../api';
 
 jest.mock("../../../api", () => ({
   setLogIn: jest.fn(() => ({ success: true, token: 'TOKEN' })),
   setRegistrationToServer: jest.fn(() => ({ success: true, token: 'TOKEN' })),
-  getCardDataFromServer: jest.fn(() => ({ id: 'testid', cardNumber: '1234 1234 1234 1234', expiryDate: '12/21', cardName: 'testname', cvc: '123' }))
 }));
 
-describe("#AUTHENTICATE", () => {
+describe("authenticate", () => {
   afterAll(jest.clearAllMocks);
 
   it("correct credentials", async () => {
-
     setLogIn.mockImplementation(async () => ({ success: true, token: 'TOKEN' }));
-    getCardDataFromServer.mockImplementation(async () => ({
-      id: 'testid',
-      cardNumber: '1234 1234 1234 1234',
-      expiryDate: '12/21',
-      cardName: 'testname',
-      cvc: '123'
-    }));
 
     const dispatched = await recordSaga(
       authenticateSaga,
@@ -30,26 +21,15 @@ describe("#AUTHENTICATE", () => {
 
     expect(dispatched).toEqual([
       {
-        type: "LOG_IN",
+        type: LOG_IN_SUCCESS,
         payload: {
           token: 'TOKEN'
-        }
-      },
-      {
-        type: 'SET_CARD',
-        payload: {
-          cardNumber: '1234 1234 1234 1234',
-          expiryDate: '12/21',
-          cardName: 'testname',
-          cvc: '123'
         }
       }
     ]);
   });
 
-
   it("wrong credentials", async () => {
-
     setLogIn.mockImplementation(async () => ({ success: false }));
 
     const dispatched = await recordSaga(
@@ -57,15 +37,24 @@ describe("#AUTHENTICATE", () => {
       authenticate("testlogin", "testpassword")
     );
 
-    expect(dispatched).toEqual([]);
+    expect(dispatched).toEqual([
+      {
+        type: LOG_IN_FAILURE,
+        payload: {
+          error: {
+            authorization: 'Ошибка авторизации',
+            registration: ''
+          }
+        }
+      }
+    ]);
   });
 });
 
-describe("#REGISTRATION", () => {
+describe("registration", () => {
   afterAll(jest.clearAllMocks);
 
   it("correct credentials", async () => {
-
     setRegistrationToServer.mockImplementation(async () => ({ success: true, token: 'TOKEN' }));
 
     const dispatched = await recordSaga(
@@ -75,7 +64,7 @@ describe("#REGISTRATION", () => {
 
     expect(dispatched).toEqual([
       {
-        type: "LOG_IN",
+        type: LOG_IN_SUCCESS,
         payload: {
           token: 'TOKEN'
         }
@@ -84,7 +73,6 @@ describe("#REGISTRATION", () => {
   });
 
   it("wrong credentials", async () => {
-
     setRegistrationToServer.mockImplementation(async () => ({ success: false }));
 
     const dispatched = await recordSaga(
@@ -92,6 +80,16 @@ describe("#REGISTRATION", () => {
       registration("testlogin", "testpassword", "testname")
     );
 
-    expect(dispatched).toEqual([]);
+    expect(dispatched).toEqual([
+      {
+        type: LOG_IN_FAILURE,
+        payload: {
+          error: {
+            authorization: '',
+            registration: 'Ошибка регистрации'
+          }
+        }
+      }
+    ]);
   });
 });

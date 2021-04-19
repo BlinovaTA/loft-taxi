@@ -1,5 +1,5 @@
 import { setCardDataSaga, getCardDataSaga } from '../card';
-import { setCardData, getCardData } from '../../actions/card';
+import { setCardData, getCardData, SET_CARD_SUCCESS, SET_CARD_FAILURE } from '../../actions/card';
 import { setCardDataToServer, getCardDataFromServer } from '../../../api';
 import { recordSaga } from "./recordSaga";
 
@@ -11,85 +11,91 @@ jest.mock('../../../api', () => ({
 describe('card saga', () => {
   afterAll(jest.clearAllMocks);
 
-  describe('#SET_CARD_DATA', () => {
-    describe('with correct credentials', () => {
-      it('card through api', async () => {
-        setCardDataToServer.mockImplementation(async () => true);
+  describe('setCardData', () => {
+    it('correct credentials', async () => {
+      setCardDataToServer.mockImplementation(async () => true);
 
-        const dispatched = await recordSaga(
-          setCardDataSaga,
-          setCardData('cardNumber', 'expiryDate', 'cardName', 'cvc', 'token')
-        );
+      const dispatched = await recordSaga(
+        setCardDataSaga,
+        setCardData('cardNumber', 'expiryDate', 'cardName', 'cvc', 'token')
+      );
 
-        expect(dispatched).toEqual([
-          {
-            type: 'SET_CARD',
-            payload: {
-              cardNumber: 'cardNumber',
-              expiryDate: 'expiryDate',
-              cardName: 'cardName',
-              cvc: 'cvc'
-            }
+      expect(dispatched).toEqual([
+        {
+          type: SET_CARD_SUCCESS,
+          payload: {
+            cardNumber: 'cardNumber',
+            expiryDate: 'expiryDate',
+            cardName: 'cardName',
+            cvc: 'cvc'
           }
-        ]);
-      });
+        }
+      ]);
     });
 
-    describe('with wrong credentials', () => {
-      it('card through api', async () => {
-        setCardDataToServer.mockImplementation(() => false);
+    it('wrong credentials', async () => {
+      setCardDataToServer.mockImplementation(() => false);
 
-        const dispatched = await recordSaga(
-          setCardDataSaga,
-          setCardData('cardNumber', 'expiryDate', 'cardName', 'cvc', 'token')
-        );
+      const dispatched = await recordSaga(
+        setCardDataSaga,
+        setCardData('cardNumber', 'expiryDate', 'cardName', 'cvc', 'token')
+      );
 
-        expect(dispatched).toEqual([]);
-      });
+      expect(dispatched).toEqual([
+        {
+          type: SET_CARD_FAILURE,
+          payload: {
+            error: 'Не удалось сохранить данные карты на сервер'
+          }
+        }
+      ]);
     });
   });
 
-  describe('#GET_CARD_DATA', () => {
-    describe('with correct credentials', () => {
-      it('card through api', async () => {
-        getCardDataFromServer.mockImplementation(async () => ({
-          id: 'testid',
-          cardNumber: '1234 1234 1234 1234',
-          expiryDate: '12/21',
-          cardName: 'testname',
-          cvc: '123'
-        }));
+  describe('getCardData', () => {
+    it('correct credentials', async () => {
+      getCardDataFromServer.mockImplementation(async () => ({
+        id: 'testid',
+        cardNumber: '1234 1234 1234 1234',
+        expiryDate: '12/21',
+        cardName: 'testname',
+        cvc: '123'
+      }));
 
-        const dispatched = await recordSaga(
-          getCardDataSaga,
-          getCardData('token')
-        );
+      const dispatched = await recordSaga(
+        getCardDataSaga,
+        getCardData('token')
+      );
 
-        expect(dispatched).toEqual([
-          {
-            type: 'SET_CARD',
-            payload: {
-              cardNumber: '1234 1234 1234 1234',
-              expiryDate: '12/21',
-              cardName: 'testname',
-              cvc: '123'
-            }
+      expect(dispatched).toEqual([
+        {
+          type: SET_CARD_SUCCESS,
+          payload: {
+            cardNumber: '1234 1234 1234 1234',
+            expiryDate: '12/21',
+            cardName: 'testname',
+            cvc: '123'
           }
-        ]);
-      });
+        }
+      ]);
     });
 
-    describe('with wrong credentials', () => {
-      it('card through api', async () => {
-        getCardDataFromServer.mockImplementation(() => ({ success: false }));
+    it('wrong credentials', async () => {
+      getCardDataFromServer.mockImplementation(() => ({ success: false }));
 
-        const dispatched = await recordSaga(
-          getCardDataSaga,
-          getCardData('token')
-        );
+      const dispatched = await recordSaga(
+        getCardDataSaga,
+        getCardData('token')
+      );
 
-        expect(dispatched).toEqual([]);
-      });
+      expect(dispatched).toEqual([
+        {
+          type: SET_CARD_FAILURE,
+          payload: {
+            error: 'Не удалось получить данные карты с сервера'
+          }
+        }
+      ]);
     });
   });
 });

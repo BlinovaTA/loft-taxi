@@ -1,9 +1,9 @@
-import address from '../address'
-import { setAddressList, setStartAddress, setEndAddress } from '../../actions/address'
+import address from '../address';
+import { setAddressListSuccess, setAddressListFailure, getAddressList } from '../../actions/address';
 
 describe("address", () => {
-  it('returns address list data', () => {
-    expect(address({}, setAddressList([{
+  it('set address list success', () => {
+    expect(address({}, setAddressListSuccess([{
       label: 'address1',
       value: 'address1'
     }, {
@@ -11,13 +11,33 @@ describe("address", () => {
       value: 'address2'
     }])))
       .toEqual({
-        addressList: [{
+        list: [{
           label: 'address1',
           value: 'address1'
         }, {
           label: 'address2',
           value: 'address2'
-        }]
+        }],
+        error: '',
+        isLoading: false
+      })
+  });
+
+  it('set address list failure', () => {
+    expect(address({}, setAddressListFailure('error')))
+      .toEqual({
+        list: [],
+        error: 'error',
+        isLoading: false
+      })
+  });
+
+  it('set address list failure', () => {
+    expect(address({}, getAddressList()))
+      .toEqual({
+        list: [],
+        error: '',
+        isLoading: true
       })
   });
 });

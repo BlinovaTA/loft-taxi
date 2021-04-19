@@ -2,14 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classNames from "classnames";
-import Select from 'react-select'
+import Alert from 'antd/lib/alert';
+import Select from 'react-select';
+import Spin from 'antd/lib/spin';
 import { getRoute } from '../store/actions/mapRoute';
 import '../scss/route-form.scss';
 import '../scss/select.scss';
 
 class RouteForm extends Component {
   static propTypes = {
-    addressList: PropTypes.array
+    getRoute: PropTypes.func,
+    address: PropTypes.object,
+    isPaymentData: PropTypes.bool,
+    routeError: PropTypes.string
   }
 
   state = {
@@ -36,7 +41,7 @@ class RouteForm extends Component {
   }
 
   render() {
-    const { addressList, isPaymentData } = this.props;
+    const { address, isPaymentData, routeError } = this.props;
     const { startAddress, endAddress } = this.state;
 
     const style = {
@@ -51,42 +56,43 @@ class RouteForm extends Component {
 
     return (
       <form className='route-form' onSubmit={this.sendOrder}>
-        {isPaymentData
-          ?
-          <>
-            <div className='selects-wrapper'>
-              <div className='item-wrapper' data-testid="from">
-                <Select
-                  className='select'
-                  isClearable={true}
-                  options={addressList.filter(item => item.value !== startAddress && item.value !== endAddress)}
-                  placeholder='Откуда'
-                  styles={style}
-                  onChange={this.startAddressChange}
-                />
-              </div>
-              <div className='item-wrapper' data-testid="to">
-                <Select
-                  className='select'
-                  isClearable={true}
-                  options={addressList.filter(item => item.value !== endAddress && item.value !== startAddress)}
-                  placeholder='Куда'
-                  styles={style}
-                  onChange={this.endAddressChange}
-                />
-              </div>
-            </div>
-            <button
-              data-testid="order"
-              type='submit'
-              className={classNames('form__button', 'button', { ['button--disabled']: disabled })}
-              disabled={disabled}
-            >
-              Заказать
-            </button>
-          </>
-          :
-          <div className="route-form__no-payment-data" data-testid="no-payment" >Для заказа введите платежные данные на странице <b>Профиль</b></div>}
+        { address.isLoading ? <div className="route-form__no-data" data-testid="is-loading" ><Spin tip="Загрузка..." color={'#faad14'} /></div> :
+          address.error ? <div className="route-form__no-data" data-testid="error" >{address.error}</div> :
+            isPaymentData ?
+              <>
+                {routeError && <Alert className='route-form__alert' banner message={routeError} type='error' showIcon />}
+                <div className='selects-wrapper'>
+                  <div className='item-wrapper' data-testid="from">
+                    <Select
+                      className='select'
+                      isClearable={true}
+                      options={address.list.filter(item => item.value !== startAddress && item.value !== endAddress)}
+                      placeholder='Откуда'
+                      styles={style}
+                      onChange={this.startAddressChange}
+                    />
+                  </div>
+                  <div className='item-wrapper' data-testid="to">
+                    <Select
+                      className='select'
+                      isClearable={true}
+                      options={address.list.filter(item => item.value !== endAddress && item.value !== startAddress)}
+                      placeholder='Куда'
+                      styles={style}
+                      onChange={this.endAddressChange}
+                    />
+                  </div>
+                </div>
+                <button
+                  data-testid="order"
+                  type='submit'
+                  className={classNames('form__button', 'button', { 'button--disabled': disabled })}
+                  disabled={disabled}
+                >
+                  Заказать
+                </button>
+              </>
+              : <div className="route-form__no-data" data-testid="no-payment" >Для заказа введите платежные данные на странице <b>Профиль</b></div>}
       </form>
     )
   }
@@ -94,8 +100,9 @@ class RouteForm extends Component {
 
 const mapStateToProps = function (state) {
   return {
-    addressList: state.address.addressList,
-    isPaymentData: state.card.isPaymentData
+    address: state.address,
+    isPaymentData: state.card.isPaymentData,
+    routeError: state.mapRoute.error
   }
 }
 
